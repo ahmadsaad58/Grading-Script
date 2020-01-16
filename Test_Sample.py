@@ -2,7 +2,7 @@ import unittest
 from Sample import greet, bye
 
 # Unit Test Class
-class TestSample(unittest.TestCase):
+class Test_Sample(unittest.TestCase):
     
     # Test the greet function
     def test_greet(self):
