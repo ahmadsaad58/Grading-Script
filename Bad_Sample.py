@@ -1,17 +1,16 @@
-# This file is serve as a representation of a good student file that is turned in
-
+# This file is serve as a representation of a bad student file 
 
 # say hello to user
 def greet(name: str) -> str: 
-	return "Hello, " + name + "!"
+	return "heLO, " + name + "?"
 
 # say good bye to user
 def bye() -> str: 
-	return "Good Bye!"
+	return "G00D daY!"
 
 # main method
 def main():
-	my_name = "Saad"
+	my_name = "Bad Student"
 	print( greet(my_name) )
 	print( bye() )
 
