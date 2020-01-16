@@ -1,5 +1,16 @@
-# This file is serve as a representation of a good student file that is turned in
+#  File: Sample.py
 
+#  Description: A representation of a good student file
+
+#  Student Name: Good Student
+
+#  Student UT EID: ga123
+
+#  Course Name: CS 313E
+
+#  Unique Number: 85575
+
+# Days Late: 0
 
 # say hello to user
 def greet(name: str) -> str: 
@@ -11,7 +22,7 @@ def bye() -> str:
 
 # main method
 def main():
-	my_name = "Saad"
+	my_name = "Good Student"
 	print( greet(my_name) )
 	print( bye() )
 

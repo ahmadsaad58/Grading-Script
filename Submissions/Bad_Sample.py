@@ -1,4 +1,17 @@
-# This file is serve as a representation of a bad student file 
+#  File: Bad_Sample.py
+
+#  Description: A representation of a bad student file
+
+#  Student Name: Bad Student
+
+#  Student UT EID: ba123
+
+#  Course Name: CS 313E
+
+#  Unique Number: 85575
+
+# Days Late: 2
+
 
 # say hello to user
 def greet(name: str) -> str: 
