@@ -5,7 +5,7 @@ import re
 import os
 import shutil
 import errno
-from typing import List
+from typing import List, Tuple
 
 
 # Important file structure 
@@ -16,13 +16,11 @@ enddir = "Graded"
 # file that student file will be copied to
 copydest = "Test.py"
 
-# testing script (may need to be changed depending on the test case)
+# testing script (may need to be changed depending on the test case file)
 tester = "Test_Sample.py"
 
 # append results to results.txt
 ret = "results.txt"
-
-
 
 # gets the files and returns a list to be traversed
 def get_files() -> List[str]: 
@@ -43,16 +41,26 @@ def traverse_files(files: list):
             src = copydir + "/" + source
             # fills the test file
             shutil.copyfile(src, copydest) 
-            grade(tester)
+            count, fails = grade(tester)
+            print(count, fails)
 
 
-def grade(tester: str) -> int, List[str]:
+# Returns the fails and count
+def grade(tester: str) -> Tuple[int, List[str]]:
     # working in Test_Sample.py now
     os.system('python3 Test_Sample.py 2> help.txt')
     
+    fails = []
     with open("help.txt") as f: 
        for line in f: 
-           print(line.strip())
+           l = line.strip()
+           if l[:4] == "FAIL":
+               fails.append(l)
+    
+    if len(fails) > 0:
+        fails.pop()
+    
+    return len(fails), fails
     
     
 
