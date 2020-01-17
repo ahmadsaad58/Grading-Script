@@ -62,17 +62,23 @@ class Student():
                     elif "Student's UT EID" in line:
                         self.student_id = line.strip().split(':')[1].strip()
                     elif "Partner's Name" in line: 
-                        self.partner = line.strip().split(':')[1].strip()
+                        name = line.strip().split(':')[1].strip()
+                        self.partner = name if len(name) > 0 else None
                     elif "Partner Name" in line:
-                        self.partner = line.strip().split(':')[1].strip()
+                        name = line.strip().split(':')[1].strip()
+                        self.partner = name if len(name) > 0 else None
                     elif "Partner UT EID" in line:
-                        self.partner_id = line.strip().split(':')[1].strip()
+                        eid = line.strip().split(':')[1].strip()
+                        self.partner_id = eid if len(eid) > 0 else None
                     elif "Partner's UT EID" in line:
-                        self.partner_id = line.strip().split(':')[1].strip()
+                        eid = line.strip().split(':')[1].strip()
+                        self.partner_id = eid if len(eid) > 0 else None
                     elif "Days Late" in line:
-                        self.days_late = int(line.strip().split(':')[1].strip())
+                        late = line.strip().split(':')[1].strip()
+                        self.days_late = int(late) if late else 0
                     elif "Day Late" in line:
-                        self.days_late = int(line.strip().split(':')[1].strip())
+                        late = line.strip().split(':')[1].strip()
+                        self.days_late = int(late) if late else 0
                     # counts comments
                     if "#" in line: 
                         # will count header, leave it for a little better grade
@@ -103,11 +109,13 @@ class Student():
     # calculating the score (Step 3)
     # 70 pts from test cases + 30 pts from comments/style
     def calculate_grade(self):
+        self.score -= 10 * self.days_late
         self.score -= len(self.failures) * CONST_COST_OF_TEST
         if len(self.comments) < (self.num_lines / 30):
             self.score -= 30
         elif len(self.comments) < (self.num_lines / 20):
             self.score -= 20
+        
 
     
     # runs all the steps in sequence
