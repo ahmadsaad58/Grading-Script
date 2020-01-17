@@ -1,40 +1,69 @@
 import sys
 import subprocess
 import signal
-import time
 import re
+import os
+import shutil
+import errno
+from typing import List
 
-inputs = []
-answers = []
-cfile = "correct.txt"
-errdir = "errdir"
-copydir = "submissions"
-subdir = "./submissions"
-template = []
 
-class Timeout(Exception):
-    pass
+# Important file structure 
+errdir = "Regrade"
+copydir = "Submissions"
+enddir = "Graded"
 
-def try_one(func,arg,t):
-    def timeout_handler(signum, frame):
-        raise Timeout()
+# file that student file will be copied to
+copydest = "Test.py"
 
-    old_handler = signal.signal(signal.SIGALRM, timeout_handler)
-    signal.alarm(t) # triger alarm in 3 seconds
+# testing script (may need to be changed depending on the test case)
+tester = "Test_Sample.py"
 
-    try:
-        t1 = time.clock()
-        score = func(arg)
-        t2 = time.clock()
+# append results to results.txt
+ret = "results.txt"
 
-    except Timeout:
-        print('{} timed out after {} seconds'.format(func.__name__,t))
-        return 20
-    finally:
-        signal.signal(signal.SIGALRM, old_handler)
 
-    signal.alarm(0)
-    return score
+
+# gets the files and returns a list to be traversed
+def get_files() -> List[str]: 
+    subdir = "./" + copydir
+    process = subprocess.Popen(['ls', subdir], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+    files = process.communicate()[0]
+    files = files.decode()
+    
+    # returns list of files
+    return files.split("\n")
+
+
+# traverses the files and appends to results
+def traverse_files(files: list):
+    # loops thru the files
+    for source in files:
+        if source[-3:] == ".py": 
+            src = copydir + "/" + source
+            # fills the test file
+            shutil.copyfile(src, copydest) 
+            grade(tester)
+
+
+def grade(tester: str) -> int, List[str]:
+    # working in Test_Sample.py now
+    os.system('python3 Test_Sample.py 2> help.txt')
+    
+    with open("help.txt") as f: 
+       for line in f: 
+           print(line.strip())
+    
+    
+
+    
+
+
+
+def run():
+    traverse_files(get_files())
+
+run()
 
 
 def main():
@@ -45,24 +74,6 @@ def main():
     start_submission = None
     end_submission = None
 
-    if len(sys.argv) > 1:
-        rfile = sys.argv[1]
-
-    f = open(cfile)
-    for line in f:
-        if "True" in line:
-            answers.append(["True", line.strip()])
-        elif "False" in line:
-            answers.append(["False", line.strip()])
-        else:
-            answers.append([re.findall("/d+", line.strip()), line.strip()])
-    f.close()
-
-    try:
-        while True:
-            answers.remove([])
-    except:
-        pass
 
     process = subprocess.Popen(['ls', subdir], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
     files = process.communicate()[0]
@@ -267,4 +278,4 @@ def grade_assign(filetograde):
 
     return score+comment_score, grade_comments
 
-main()
+# main()

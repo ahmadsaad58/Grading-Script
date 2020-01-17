@@ -12,12 +12,13 @@ class Test_Sample(unittest.TestCase):
     # Test the greet function
     @timeout()
     def test_greet(self):
-        self.assertEqual(greet("Saad"), "Hello, Saad!", "Should be \'Hello, Saad!\'")
+        self.assertEqual(greet("Saad"), "Hello, Saad!", "Testing Greet")
 
     # Test the bye function
     @timeout()
     def test_bye(self):
-        self.assertEqual(bye(), "Good Bye!", "Should be \'Good Bye!\'")
+        self.assertEqual(bye(), "Good Bye!", "Testing Bye")
+
 
 if __name__ == '__main__':
     unittest.main()
