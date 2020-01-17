@@ -1,7 +1,7 @@
 import unittest
 
 # decorator for time
-from Timeout import timeout
+from Tools.Timeout import timeout
 
 # individual student copied file, put all the functions you are testing 
 from Test import greet, bye
