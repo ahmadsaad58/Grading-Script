@@ -1,31 +1,33 @@
-#  File: Compile_Error.py
+#  File: Bad_Sample.py
 
-#  Description: A representation of a file with compiler errors
+#  Description: A representation of a bad student file
 
-#  Student Name: Compile Error
+#  Student Name: Bad Student
 
-#  Student UT EID: ce123
+#  Student UT EID: ba123
 
 #  Course Name: CS 313E
 
 #  Unique Number: 85575
 
-# Days Late: 0
+# Days Late: 2
+
 
 # say hello to user
 def greet(name: str) -> str: 
-	print( "Hello, " + name + "!" )
+	return "heLO, " + name + "?"
 
 # say good bye to user
 def bye() -> str: 
-	return Good Bye!"
+	return "G00D daY!"
 
 # main method
 def main():
-	my_name = "Compile Error"
+	my_name = "Bad Student"
 	print( greet(my_name) )
 	print( bye() )
 
 
 if __name__ == "__main__":
 	main()
+	

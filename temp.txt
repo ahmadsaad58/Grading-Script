@@ -1,7 +1,31 @@
+FF
+======================================================================
+FAIL: test_bye (__main__.Test_Sample)
+----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "Test_Sample.py", line 7, in <module>
-    from Test import greet, bye
-  File "/Users/saad/Documents/TA/Spring 2020/Scripts/Test.py", line 21
-    return Good Bye!"
-                  ^
-SyntaxError: invalid syntax
+  File "/Users/saad/Documents/TA/Spring 2020/Scripts/Tools/Timeout.py", line 20, in wrapper
+    result = func(*args, **kwargs)
+  File "Test_Sample.py", line 20, in test_bye
+    self.assertEqual(bye(), "Good Bye!", "Testing Bye")
+AssertionError: 'G00D daY!' != 'Good Bye!'
+- G00D daY!
++ Good Bye!
+ : Testing Bye
+
+======================================================================
+FAIL: test_greet (__main__.Test_Sample)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/saad/Documents/TA/Spring 2020/Scripts/Tools/Timeout.py", line 20, in wrapper
+    result = func(*args, **kwargs)
+  File "Test_Sample.py", line 15, in test_greet
+    self.assertEqual(greet("Saad"), "Hello, Saad!", "Testing Greet")
+AssertionError: 'heLO, Saad?' != 'Hello, Saad!'
+- heLO, Saad?
++ Hello, Saad!
+ : Testing Greet
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+FAILED (failures=2)

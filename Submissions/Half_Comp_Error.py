@@ -1,10 +1,10 @@
-#  File: Compile_Error.py
+#  File: Half_Comp_Error.py
 
 #  Description: A representation of a file with compiler errors
 
-#  Student Name: Compile Error
+#  Student Name: Half Error
 
-#  Student UT EID: ce123
+#  Student UT EID: he123
 
 #  Course Name: CS 313E
 
@@ -18,7 +18,7 @@ def greet(name: str) -> str:
 
 # say good bye to user
 def bye() -> str: 
-	return Good Bye!"
+	return "Good Bye!"
 
 # main method
 def main():

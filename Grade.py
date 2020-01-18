@@ -162,8 +162,10 @@ class Student():
         self.fill_info()
         self.run_test_cases()
         self.calculate_grade()
-        print(self.error)
-        print(self.error_output)
+        print('Failures', self.failures)
+        print(self.file_to_grade)
+        # print(self.error)
+        # print(self.error_output)
         # TODO: may need to add more info
         return self.score
 
