@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "Test_Sample.py", line 7, in <module>
+    from Test import greet, bye
+  File "/Users/saad/Documents/TA/Spring 2020/Scripts/Test.py", line 21
+    return Good Bye!"
+                  ^
+SyntaxError: invalid syntax

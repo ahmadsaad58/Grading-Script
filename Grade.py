@@ -45,7 +45,8 @@ class Student():
         self.comments = []
         self.score = 100
         # error flag
-        self.error = (False, "")
+        self.error = [False, []]
+        self.error_output = ""
 
     # fill student info from header and count comments (step 1)
     def fill_info(self):
@@ -84,7 +85,11 @@ class Student():
                         # will count header, leave it for a little better grade
                         self.comments.append(line.strip())
                 except:
-                    self.error = (True, "Header Info incorrect")
+                    self.error = [True, ["Header Info incorrect"]]
+    
+        if not self.student_name or not self.student_id: 
+            self.error = [True, ["Header Info incorrect"]]
+
         
     
     # actual grading (step 2)
@@ -95,12 +100,31 @@ class Student():
         # calls Test_Sample.py now and pipes to help.txt
         os.system('python3 ' + CONST_TESTER + ' 2> ' + CONST_TEMP_FILE)
     
+        # store errors that can be later piped to a file
+        temp_error_store = []
+
         # open piped file and 
         with open(CONST_TEMP_FILE) as piped_file: 
             for line in piped_file: 
+                # add each line in case of error
+                temp_error_store.append(line)
+                
                 curr = line.strip()
+                # catch the failures
                 if curr[:4] == "FAIL":
                     self.failures.append(curr)
+
+                # catch the assertion error from Unittest framework
+                if "AssertionError:" in curr: 
+                    continue
+                
+                # Catch the compile time error
+                if "Error" in curr: 
+                    self.error[0] = True
+                    self.error[1].append( "Error in compiling, rerun: " + curr ) 
+                    self.error_output = "".join(temp_error_store)
+
+
     
         # pop last failure as it is extra
         if len(self.failures) > 0:
@@ -109,8 +133,23 @@ class Student():
     # calculating the score (Step 3)
     # 70 pts from test cases + 30 pts from comments/style
     def calculate_grade(self):
+        
+        # Check the errors
+        if self.error[1]: 
+            for error in self.error[1]:
+                # points off for bad header
+                if error == "Header Info incorrect":
+                    self.score -= 5
+                # 0 points for any error
+                if "Error in compiling," in error:
+                    self.score = 0
+                    return
+        
+        # points for late and each test case
         self.score -= 10 * self.days_late
         self.score -= len(self.failures) * CONST_COST_OF_TEST
+        
+        # score the comments
         if len(self.comments) < (self.num_lines / 30):
             self.score -= 30
         elif len(self.comments) < (self.num_lines / 20):
@@ -123,6 +162,8 @@ class Student():
         self.fill_info()
         self.run_test_cases()
         self.calculate_grade()
+        print(self.error)
+        print(self.error_output)
         # TODO: may need to add more info
         return self.score
 
@@ -144,8 +185,8 @@ def get_files():
         print(score)
     
     # remove files
-    os.remove(CONST_TEMP_FILE)
-    os.remove(CONST_COPY_DEST)
+    # os.remove(CONST_TEMP_FILE)
+    # os.remove(CONST_COPY_DEST)
 
 
     
