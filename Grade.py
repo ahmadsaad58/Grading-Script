@@ -2,6 +2,7 @@ import sys
 import subprocess
 import os
 import shutil
+import pandas
 from typing import List, Tuple
 
 
@@ -24,6 +25,7 @@ ret = "results.txt"
 # number of test cases (2 tests in this case)
 CONST_NUM_TESTS = 2
 CONST_COST_OF_TEST = 70 / CONST_NUM_TESTS 
+CONST_SCORE_CUTOFF = 30
 
 
 # Student class that has all of the relevant assets for a single student
@@ -157,13 +159,26 @@ class Student():
         
 
     
-    # runs all the steps in sequence
-    def grade(self) -> int: 
+    # runs all the steps in sequence 
+    def grade(self): 
+        # calls the functions
         self.fill_info()
         self.run_test_cases()
         self.calculate_grade()
-        print('Failures', self.failures)
-        print(self.file_to_grade)
+        
+        # score was met
+        if self.score >= CONST_SCORE_CUTOFF: 
+            pass
+
+
+        
+
+
+
+
+
+        # print('Failures', self.failures)
+        # print(self.file_to_grade)
         # print(self.error)
         # print(self.error_output)
         # TODO: may need to add more info
@@ -184,7 +199,7 @@ def get_files():
     for source in files:
         temp_student = Student(source)
         score = temp_student.grade()
-        print(score)
+        print(source, score)
     
     # remove files
     # os.remove(CONST_TEMP_FILE)

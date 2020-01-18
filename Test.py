@@ -1,29 +1,28 @@
-#  File: Bad_Sample.py
+#  File: Sample.py
 
-#  Description: A representation of a bad student file
+#  Description: A representation of a good student file
 
-#  Student Name: Bad Student
+#  Student Name: Good Student
 
-#  Student UT EID: ba123
+#  Student UT EID: ga123
 
 #  Course Name: CS 313E
 
 #  Unique Number: 85575
 
-# Days Late: 2
-
+# Days Late: 0
 
 # say hello to user
 def greet(name: str) -> str: 
-	return "heLO, " + name + "?"
+	return "Hello, " + name + "!"
 
 # say good bye to user
 def bye() -> str: 
-	return "G00D daY!"
+	return "Good Bye!"
 
 # main method
 def main():
-	my_name = "Bad Student"
+	my_name = "Good Student"
 	print( greet(my_name) )
 	print( bye() )
 
