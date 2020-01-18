@@ -23,7 +23,7 @@ The grades and comments will be available in a <i>CSV file </i> and should be up
 	- Moved to regrade as there could more errors 
 - Half_Head.py: Half of the header is present
 	- Move to regrade to better assess the issue
--No_Comment.py: No comments/header
+- No_Comment.py: No comments/header
 	- Move to regrade since no header
 - No_Header.py: No header
 	- Move to regrade to better assess the issue
