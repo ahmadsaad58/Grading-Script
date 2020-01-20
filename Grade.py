@@ -208,16 +208,20 @@ def get_files():
         # create and grade student
         temp_student = Student(source)
         write_to_csv = temp_student.grade()
+        # what file we are moving
+        file_to_move = "./" + CONST_SUBMISSIONS + source
         
         # add to dataframe
         if write_to_csv:
             row = [ temp_student.student_name, temp_student.student_id, temp_student.score, " | ".join(temp_student.failures) ]
             series.append(pd.Series(row, index=frame.columns))
-            # TODO: move to graded. 
+            
+            # TODO: move to graded.
+            # shutil.move(file_to_move, + "./" + CONST_GRADED) 
         
         else: 
             # open the error file
-            with open(CONST_REGRADE + "/" + CONST_ERR_FILE, mode="a") as error_file:
+            with open(CONST_REGRADE + "/" + CONST_ERR_FILE, mode="a+") as error_file:
                 # find name, whether it exists or not
                 if not temp_student.student_name:
                     name = temp_student.file_to_grade.split('/')[-1]
@@ -228,7 +232,9 @@ def get_files():
                 # gather errors and write them
                 errors = temp_student.error_output if len(temp_student.error_output) > 0 else "NO ERRORS"
                 error_file.write("\n" + name + "    |    " + str(temp_student.score) + "\n" + errors + "\n")
+                
                 # TODO: move to regrade
+                # shutil.move(file_to_move, + "./" + CONST_REGRADE) 
 
             
     
