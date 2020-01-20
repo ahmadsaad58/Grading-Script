@@ -209,7 +209,7 @@ def get_files():
         temp_student = Student(source)
         write_to_csv = temp_student.grade()
         # what file we are moving
-        file_to_move = "./" + CONST_SUBMISSIONS + source
+        file_to_move = "./" + CONST_SUBMISSIONS + "/" + source
         
         # add to dataframe
         if write_to_csv:
