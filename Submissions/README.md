@@ -12,7 +12,7 @@ The grades and comments will be available in a <i>CSV file </i> and should be up
 <i> The files in this folder are for testing how robust the grading script is, if you would like to add more tests, feel free to fork </i>
 
 - Bad_Sample.py: Wrong output
-	- Move to graded folder and low points
+	- Move to regrade folder due to low points
 - Comp_Error_So_No_Head.py: Compiler Error and No header
 	- Moved to regrade, name is file name
 - Compile_Error.py: Compiler Error

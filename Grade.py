@@ -2,7 +2,7 @@ import sys
 import subprocess
 import os
 import shutil
-import pandas
+import pandas as pd
 from typing import List, Tuple
 
 
@@ -14,13 +14,16 @@ CONST_GRADED = "Graded"
 # testing script (may need to be changed depending on the test case file)
 CONST_TESTER = "Test_Sample.py"
 
-# file that student file will be copied to
+# file that student file will be copied to, will be deleted by end
 CONST_COPY_DEST = "Test.py"
 # temp file's name
 CONST_TEMP_FILE = "temp.txt"
 
+# Graded CSV constant
+CONST_CSV = "Graded.csv"
+
 # append results to results.txt
-ret = "results.txt"
+CONST_ERR_FILE = "fails.txt"
 
 # number of test cases (2 tests in this case)
 CONST_NUM_TESTS = 2
@@ -165,29 +168,30 @@ class Student():
         self.fill_info()
         self.run_test_cases()
         self.calculate_grade()
-        
-        # score was met
-        if self.score >= CONST_SCORE_CUTOFF: 
-            pass
 
-
-        
-
-
-
-
-
-        # print('Failures', self.failures)
-        # print(self.file_to_grade)
-        # print(self.error)
-        # print(self.error_output)
-        # TODO: may need to add more info
-        return self.score
+        # checks whether error and above cutoff
+        return (not self.error[0]) and (self.score >= CONST_SCORE_CUTOFF)
 
             
 
 # Traverses files and grades them
 def get_files(): 
+
+    # See if csv is there
+    subdir = "./" + CONST_GRADED
+    process = subprocess.Popen(['ls', subdir], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+    files = process.communicate()[0]
+    files = files.decode()
+    files = files.split("\n")
+    
+    # if it is read it in, else make new frame
+    if CONST_CSV in files: 
+        frame = pd.read_csv(subdir + "/" + CONST_CSV)
+    else:
+        # creating the csv frame for graded assignments
+        frame = pd.DataFrame(columns=["Name", "EID", "Score", "Failures"])
+
+    # traverse files in graded
     subdir = "./" + CONST_SUBMISSIONS
     process = subprocess.Popen(['ls', subdir], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
     files = process.communicate()[0]
@@ -195,71 +199,51 @@ def get_files():
     # creates and filters list
     files = files.split("\n")
     files = list(filter(lambda x: len(x) > 0 and x[-3:] == ".py", files))
+    
+    # list of series/rows for csv
+    series = []
+
     # traverse thru list
     for source in files:
+        # create and grade student
         temp_student = Student(source)
-        score = temp_student.grade()
-        print(source, score)
+        write_to_csv = temp_student.grade()
+        
+        # add to dataframe
+        if write_to_csv:
+            row = [ temp_student.student_name, temp_student.student_id, temp_student.score, " | ".join(temp_student.failures) ]
+            series.append(pd.Series(row, index=frame.columns))
+            # TODO: move to graded. 
+        
+        else: 
+            # open the error file
+            with open(CONST_REGRADE + "/" + CONST_ERR_FILE, mode="a") as error_file:
+                # find name, whether it exists or not
+                if not temp_student.student_name:
+                    name = temp_student.file_to_grade.split('/')[-1]
+                    name = name[:-3]
+                else: 
+                    name = temp_student.student_name
+                    
+                # gather errors and write them
+                errors = temp_student.error_output if len(temp_student.error_output) > 0 else "NO ERRORS"
+                error_file.write("\n" + name + "    |    " + str(temp_student.score) + "\n" + errors + "\n")
+                # TODO: move to regrade
+
+            
     
+    # add frame to csv
+    frame = frame.append(series, ignore_index=True)
+    frame.to_csv(subdir + "/" + CONST_CSV)
     # remove files
-    # os.remove(CONST_TEMP_FILE)
-    # os.remove(CONST_COPY_DEST)
+    os.remove(CONST_TEMP_FILE)
+    os.remove(CONST_COPY_DEST)
 
-
-    
-    
+   
 def main():
     get_files()
+    print("WOOOOOO YOU ARE DONE")
     
 
-    
-
-
-# def mainn():
-    
-#     process = subprocess.Popen(['ls', subdir], stdin = subprocess.PIPE, stdout = subprocess.PIPE)
-#     files = process.communicate()[0]
-#     files = files.decode()
-
-#     f = open(rfile, 'a')
-
-#     for s in files.split('\n'):
-#         if "" == s:
-#             continue
-#         s = s.strip()
-#         eid, name, section, partner = extract_info(subdir + "/" + s)
-#         if eid is "":
-#             eid = "None"
-#         if name is "":
-#             name = "None"
-#         if partner is "":
-#             partner = "None"
-
-#         src = open(subdir + "/" + s, 'r')
-#         dst = open(copydir + "/" + s, 'w')
-#         main_src = open("main.py", 'r')
-
-#         for line in src:
-#             if "main" in line:
-#                 break
-#             dst.write(line)
-
-#         for line in main_src:
-#             dst.write(line)
-
-#         src.close()
-#         dst.flush()
-#         dst.close()
-#         main_src.close()
-
-#         score, comments = grade_assign(copydir + "/" + s)
-#         scorestr = str("%.1f" % score)
-#         f.write("%-8s %-20s    %5s   %s\n" % (eid, str(name)[-20:], scorestr, comments))
-#         f.flush()
-#     f.close()
-
-
- 
- 
 if __name__ == "__main__":
     main()
