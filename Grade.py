@@ -23,7 +23,7 @@ CONST_TEMP_FILE = "temp.txt"
 CONST_CSV = "Graded.csv"
 
 # append results to results.txt
-CONST_ERR_FILE = "fails.txt"
+CONST_ERR_FILE = "Fails.txt"
 
 # number of test cases (2 tests in this case)
 CONST_NUM_TESTS = 2
@@ -234,6 +234,7 @@ def get_files():
     
     # add frame to csv
     frame = frame.append(series, ignore_index=True)
+    subdir = "./" + CONST_GRADED
     frame.to_csv(subdir + "/" + CONST_CSV)
     # remove files
     os.remove(CONST_TEMP_FILE)
