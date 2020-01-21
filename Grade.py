@@ -5,6 +5,8 @@ import shutil
 import pandas as pd
 from typing import List, Tuple
 
+# @TODO: remove the days late field, and we will have to do it manually 
+
 
 # Important folders
 CONST_REGRADE = "Regrade"
