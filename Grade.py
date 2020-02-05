@@ -45,8 +45,6 @@ class Student():
         self.student_id = None
         self.partner = None
         self.partner_id = None
-        # days late (-10 pts for each day)
-        self.days_late = 0
         # student program assets
         self.failures = []
         self.comments = []
@@ -80,13 +78,6 @@ class Student():
                         self.partner_id = eid if len(eid) > 0 else None
                     elif "Partner's UT EID" in line:
                         eid = line.strip().split(':')[1].strip()
-                        self.partner_id = eid if len(eid) > 0 else None
-                    elif "Days Late" in line:
-                        late = line.strip().split(':')[1].strip()
-                        self.days_late = int(late) if late else 0
-                    elif "Day Late" in line:
-                        late = line.strip().split(':')[1].strip()
-                        self.days_late = int(late) if late else 0
                     # counts comments
                     if "#" in line: 
                         # will count header, leave it for a little better grade
@@ -152,8 +143,7 @@ class Student():
                     self.score = 0
                     return
         
-        # points for late and each test case
-        self.score -= 10 * self.days_late
+        # points for each test case
         self.score -= len(self.failures) * CONST_COST_OF_TEST
         
         # score the comments
@@ -219,7 +209,7 @@ def get_files():
             series.append(pd.Series(row, index=frame.columns))
             
             # TODO: move to graded.
-            # shutil.move(file_to_move, + "./" + CONST_GRADED) 
+            shutil.move(file_to_move, "./" + CONST_GRADED) 
         
         else: 
             # open the error file
@@ -236,7 +226,7 @@ def get_files():
                 error_file.write("\n" + name + "    |    " + str(temp_student.score) + "\n" + errors + "\n")
                 
                 # TODO: move to regrade
-                # shutil.move(file_to_move, + "./" + CONST_REGRADE) 
+                shutil.move(file_to_move, "./" + CONST_REGRADE) 
 
             
     
