@@ -144,11 +144,7 @@ class Student():
                     self.score = 0
                     return
         
-<<<<<<< HEAD
         # points for late and each test case
-=======
-        # points for each test case
->>>>>>> 3f9271390c98460ca9002ae44daa57ef1aadf6d1
         self.score -= len(self.failures) * CONST_COST_OF_TEST
         
         # score the comments
@@ -231,11 +227,7 @@ def get_files():
                 error_file.write("\n" + name + "    |    " + str(temp_student.score) + "\n" + errors + "\n")
                 
                 # TODO: move to regrade
-<<<<<<< HEAD
                 shutil.move(file_to_move,  "./" + CONST_REGRADE) 
-=======
-                shutil.move(file_to_move, "./" + CONST_REGRADE) 
->>>>>>> 3f9271390c98460ca9002ae44daa57ef1aadf6d1
 
             
     
