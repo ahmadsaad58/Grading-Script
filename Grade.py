@@ -14,7 +14,7 @@ CONST_SUBMISSIONS = "Submissions"
 CONST_GRADED = "Graded"
 
 # testing script (may need to be changed depending on the test case file)
-CONST_TESTER = "Test_Sample.py"
+CONST_TESTER = "A1_Test.py"
 
 # file that student file will be copied to, will be deleted by end
 CONST_COPY_DEST = "Test.py"
@@ -28,9 +28,9 @@ CONST_CSV = "Graded.csv"
 CONST_ERR_FILE = "Fails.txt"
 
 # number of test cases (2 tests in this case)
-CONST_NUM_TESTS = 2
+CONST_NUM_TESTS = 32
 CONST_COST_OF_TEST = 70 / CONST_NUM_TESTS 
-CONST_SCORE_CUTOFF = 30
+CONST_SCORE_CUTOFF = 20
 
 
 # Student class that has all of the relevant assets for a single student
@@ -45,8 +45,6 @@ class Student():
         self.student_id = None
         self.partner = None
         self.partner_id = None
-        # days late (-10 pts for each day)
-        self.days_late = 0
         # student program assets
         self.failures = []
         self.comments = []
@@ -81,12 +79,6 @@ class Student():
                     elif "Partner's UT EID" in line:
                         eid = line.strip().split(':')[1].strip()
                         self.partner_id = eid if len(eid) > 0 else None
-                    elif "Days Late" in line:
-                        late = line.strip().split(':')[1].strip()
-                        self.days_late = int(late) if late else 0
-                    elif "Day Late" in line:
-                        late = line.strip().split(':')[1].strip()
-                        self.days_late = int(late) if late else 0
                     # counts comments
                     if "#" in line: 
                         # will count header, leave it for a little better grade
@@ -153,7 +145,6 @@ class Student():
                     return
         
         # points for late and each test case
-        self.score -= 10 * self.days_late
         self.score -= len(self.failures) * CONST_COST_OF_TEST
         
         # score the comments
@@ -219,7 +210,7 @@ def get_files():
             series.append(pd.Series(row, index=frame.columns))
             
             # TODO: move to graded.
-            # shutil.move(file_to_move, + "./" + CONST_GRADED) 
+            shutil.move(file_to_move, "./" + CONST_GRADED) 
         
         else: 
             # open the error file
@@ -236,7 +227,7 @@ def get_files():
                 error_file.write("\n" + name + "    |    " + str(temp_student.score) + "\n" + errors + "\n")
                 
                 # TODO: move to regrade
-                # shutil.move(file_to_move, + "./" + CONST_REGRADE) 
+                shutil.move(file_to_move,  "./" + CONST_REGRADE) 
 
             
     
